@@ -1,0 +1,36 @@
+name: Build and Release
+
+# 推送形如 v1.0.0 的 tag 时触发；也支持在 Actions 页面手动触发
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: windows-latest
+    permissions:
+      contents: write # 允许使用 GITHUB_TOKEN 创建 / 更新 Release
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 运行测试
+        run: npm test
+
+      # 打包并发布到 GitHub Releases（electron-builder 读取 package.json 的 build.publish 配置）
+      - name: 打包并发布到 Releases
+        run: npm run release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
