@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, dialog } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog, Menu } from 'electron'
 import path from 'path'
 import fs from 'fs'
 import { createRequire } from 'module'
@@ -71,6 +71,8 @@ function refocusMain() {
 }
 
 app.whenReady().then(async () => {
+  // 去掉默认菜单栏（File/Edit/View/Window/Help）
+  Menu.setApplicationMenu(null)
   await initDatabase()
   createWindow()
 

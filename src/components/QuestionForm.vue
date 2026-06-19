@@ -39,13 +39,20 @@
 
     <div class="question-list">
       <div v-for="q in questions" :key="q.id" class="question-item">
-        <div class="question-content">
-          <div class="question-text">{{ q.question }}</div>
-          <div class="answer-text">{{ q.answer }}</div>
+        <div class="question-header">
+          <span class="question-text" @click="toggleExpand(q.id)">{{ q.question }}</span>
+          <span
+            class="arrow"
+            :class="{ expanded: expandedId === q.id }"
+            @click="toggleExpand(q.id)"
+          >▼</span>
+          <div class="question-actions">
+            <button class="btn-edit" @click="editQuestion(q)">编辑</button>
+            <button class="btn-delete" @click="deleteQuestion(q.id)">删除</button>
+          </div>
         </div>
-        <div class="question-actions">
-          <button class="btn-edit" @click="editQuestion(q)">编辑</button>
-          <button class="btn-delete" @click="deleteQuestion(q.id)">删除</button>
+        <div v-if="expandedId === q.id" class="answer">
+          <strong>答案：</strong>{{ q.answer }}
         </div>
       </div>
       <div v-if="questions.length === 0" class="empty">
@@ -60,6 +67,11 @@ import { ref, onMounted } from 'vue'
 
 const questions = ref<any[]>([])
 const form = ref({ id: null as number | null, question: '', answer: '' })
+const expandedId = ref<number | null>(null)
+
+function toggleExpand(id: number) {
+  expandedId.value = expandedId.value === id ? null : id
+}
 const isEditing = ref(false)
 
 async function loadQuestions() {
@@ -269,33 +281,49 @@ onMounted(() => {
 .question-item {
   background: white;
   border-radius: 8px;
-  padding: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  overflow: hidden;
 }
 
-.question-content {
-  flex: 1;
+.question-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  gap: 12px;
 }
 
 .question-text {
+  flex: 1;
   font-size: 15px;
   font-weight: 500;
-  margin-bottom: 8px;
   color: #2c3e50;
+  cursor: pointer;
+  line-height: 1.5;
 }
 
-.answer-text {
-  font-size: 13px;
-  color: #7f8c8d;
+.arrow {
+  font-size: 12px;
+  color: #999;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.arrow.expanded {
+  transform: rotate(180deg);
+}
+
+.answer {
+  padding: 16px;
+  background: #f8f9fa;
+  border-top: 1px solid #eee;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
 }
 
 .question-actions {
   display: flex;
   gap: 8px;
-  margin-left: 16px;
 }
 
 .btn-edit, .btn-delete {

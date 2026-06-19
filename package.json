@@ -1,7 +1,9 @@
 {
   "name": "fast-lookup",
   "version": "1.0.0",
-  "description": "题目抽查系统 - 题库管理与快速查询",
+  "description": "题目速查系统 - 题库管理与快速查询",
+  "author": "Gong Xudong",
+  "email": "gongxudong_cs@aliyun.com",
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
@@ -31,8 +33,7 @@
     "appId": "com.fastlookup.app",
     "productName": "题目速查系统",
     "win": {
-      "target": "nsis",
-      "icon": "public/icon.ico"
+      "target": "nsis"
     },
     "nsis": {
       "oneClick": false,

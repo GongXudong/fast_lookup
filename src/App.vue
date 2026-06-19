@@ -16,6 +16,7 @@
           题目管理
         </button>
       </nav>
+      <div class="support">技术支持：gongxudong_cs@aliyun.com</div>
     </aside>
 
     <main class="main-content">
@@ -68,6 +69,16 @@ body {
   display: flex;
   flex-direction: column;
   padding: 12px;
+}
+
+.support {
+  margin-top: auto;
+  padding: 16px 20px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #8a99a8;
+  border-top: 1px solid #3d5166;
+  word-break: break-all;
 }
 
 .nav-item {
